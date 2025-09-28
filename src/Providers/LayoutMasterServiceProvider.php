@@ -2,6 +2,7 @@
 
 namespace Esanj\LayoutMaster\Providers;
 
+use Esanj\LayoutMaster\Commands\InstallCommand;
 use Illuminate\Support\ServiceProvider;
 
 class LayoutMasterServiceProvider extends ServiceProvider
@@ -11,7 +12,7 @@ class LayoutMasterServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->registerCommands();
     }
 
     /**
@@ -20,6 +21,15 @@ class LayoutMasterServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPublishing();
+    }
+
+    private function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                InstallCommand::class,
+            ]);
+        }
     }
 
     private function registerPublishing(): void
@@ -32,6 +42,14 @@ class LayoutMasterServiceProvider extends ServiceProvider
             $this->publishes([
                 $this->packagePath('resources/menu') => resource_path('menu'),
             ], 'esanj-layout-master-menu');
+
+            $this->publishes([
+                $this->packagePath('resources/assets') => resource_path('assets'),
+            ], 'esanj-layout-master-assets');
+
+            $this->publishes([
+                $this->packagePath('static') => base_path(),
+            ], 'esanj-layout-master-static');
 
             $this->publishes([
                 $this->packagePath('Components') => app_path('View/Components'),
