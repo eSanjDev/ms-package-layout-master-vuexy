@@ -1,0 +1,30 @@
+{
+    "name": "esanj/layout-master",
+    "description": "The ultimate template for web applications",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Esanj Team"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Esanj\\LayoutMaster\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Esanj\\LayoutMaster\\Providers\\LayoutMasterServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.2|^8.3|^8.4",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "esanj/managers": ">=0.3.0 <0.4.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

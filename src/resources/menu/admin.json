@@ -1,0 +1,35 @@
+{
+    "menu": [
+        {
+            "url": "/admin",
+            "name": "Dashboard",
+            "icon": "menu-icon icon-base ti tabler-smart-home",
+            "slug": "admin.dashboard",
+            "target": null,
+            "permission": null
+        },
+        {
+            "name": "Manager",
+            "icon": "menu-icon icon-base ti tabler-Admins",
+            "slug": "managers",
+            "badge": [
+                "primary",
+                "3"
+            ],
+            "submenu": [
+                {
+                    "url": "/admin/managers/create",
+                    "name": "Create New Manager",
+                    "slug": "admin.managers.create",
+                    "permission": "managers.create"
+                },
+                {
+                    "url": "/admin/managers",
+                    "name": "Managers List",
+                    "slug": "managers.index",
+                    "permission": "managers.list"
+                }
+            ]
+        }
+    ]
+}
