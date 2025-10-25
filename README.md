@@ -92,10 +92,6 @@ resources/menu/menu.json
             "name": "Manager",
             "icon": "menu-icon icon-base ti tabler-Admins",
             "slug": "managers",
-            "badge": [
-                "primary",
-                "3"
-            ],
             "submenu": [
                 {
                     "url": "/admin/managers/create",

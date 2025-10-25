@@ -87,13 +87,15 @@
                             </a>
                         </li>
                         <li>
-                            <div class="d-grid px-2 pt-2 pb-1">
-                                <a class="btn btn-sm btn-danger d-flex" href=""
-                                   target="_blank">
-                                    <small class="align-middle">Logout</small>
-                                    <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
-                                </a>
-                            </div>
+                            <form action="{{route('managers.auth.logout')}}" method="post">
+                                <div class="d-grid px-2 pt-2 pb-1">
+                                    @csrf
+                                    <button class="btn btn-sm btn-danger d-flex" type="submit">
+                                        <small class="align-middle">Logout</small>
+                                        <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
+                                    </button>
+                                </div>
+                            </form>
                         </li>
                     </ul>
                 </li>
