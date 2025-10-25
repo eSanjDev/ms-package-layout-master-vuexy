@@ -89,5 +89,9 @@ export default defineConfig({
         commonjsOptions: {
             include: [/node_modules/] // Helps with importing CommonJS modules
         }
-    }
+    },
+    server: {
+        host: '127.0.0.1',
+        port: 5173,
+    },
 });
