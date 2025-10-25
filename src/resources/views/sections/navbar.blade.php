@@ -1,13 +1,13 @@
 <nav class="layout-navbar navbar navbar-expand-xl align-items-center" id="layout-navbar">
     <div class="container">
         <div class="navbar-brand app-brand demo d-none d-xl-flex align-items-center py-0 me-4 ms-0">
-            <a href="{{route('admin.dashboard')}}" class="app-brand-link me-4">
-                <img src="{{asset('/assets/images/logo-esanj.png')}}" alt="logo">
+            <a href="#" class="app-brand-link me-4">
+                <img src="{{asset('/assets/vendor/layout-master/images/logo-esanj.png')}}" alt="logo">
             </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
                 <i
-                        class="icon-base ti tabler-x icon-sm d-flex align-items-center justify-content-center"></i>
+                    class="icon-base ti tabler-x icon-sm d-flex align-items-center justify-content-center"></i>
             </a>
         </div>
 
@@ -56,7 +56,7 @@
                     <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);"
                        data-bs-toggle="dropdown">
                         <div class="avatar avatar-online">
-                            <img src="{{asset('/assets/images/avatar-user.png')}}" alt class="rounded-circle"/>
+                            <img src="{{asset('/assets/vendor/layout-master/images/null.png')}}" alt class="rounded-circle"/>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -65,14 +65,14 @@
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0 me-2">
                                         <div class="avatar avatar-online">
-                                            <img src="{{asset('/assets/images/avatar-user.png')}}" alt
+                                            <img src="{{asset('/assets/vendor/layout-master/images/null.png')}}" alt
                                                  class="rounded-circle"/>
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
                                         <h6 class="mb-0">{{\Illuminate\Support\Facades\Auth::guard('manager')->user()->name}}</h6>
                                         <small
-                                                class="text-body-secondary">{{\Illuminate\Support\Facades\Auth::guard('manager')->user()->role}}</small>
+                                            class="text-body-secondary">{{\Illuminate\Support\Facades\Auth::guard('manager')->user()->role}}</small>
                                     </div>
                                 </div>
                             </a>
@@ -81,7 +81,7 @@
                             <div class="dropdown-divider my-1 mx-n2"></div>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="{{route('admin.profile')}}">
+                            <a class="dropdown-item" href="#">
                                 <i class="icon-base ti tabler-user me-3 icon-md"></i><span
                                     class="align-middle">My Profile</span>
                             </a>

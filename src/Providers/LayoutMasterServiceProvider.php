@@ -48,6 +48,10 @@ class LayoutMasterServiceProvider extends ServiceProvider
             ], 'esanj-layout-master-assets');
 
             $this->publishes([
+                $this->packagePath('public') => public_path('/assets/vendor/layout-master'),
+            ], 'esanj-layout-master-assets');
+
+            $this->publishes([
                 $this->packagePath('static') => base_path(),
             ], 'esanj-layout-master-static');
 
