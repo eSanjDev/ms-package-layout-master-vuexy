@@ -29,6 +29,15 @@ class InstallCommand extends Command
             }
         }
 
+        if (file_exists(base_path('postcss.config.js'))) {
+            if ($this->confirm('postcss.config.js file already exists. Do you remove it and copy the new one?')) {
+                unlink(base_path('postcss.config.js'));
+                $this->info('postcss.config.js removed.');
+            } else {
+                $this->info('Skipping postcss.config.js file copy.');
+            }
+        }
+
 
         $this->info('Installing Layout Master package...');
         $this->call('vendor:publish', [
