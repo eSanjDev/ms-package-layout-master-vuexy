@@ -1,6 +1,6 @@
 {
     "name": "Esanj",
-    "version": "3.0.0",
+    "version": "0.0.2",
     "private": true,
     "type": "module",
     "license": "Commercial",
@@ -21,7 +21,7 @@
         "@form-validation/plugin-framework": "2.4.0",
         "@form-validation/plugin-message": "2.4.0",
         "@fortawesome/fontawesome-free": "6.7.2",
-        "@fullcalendar/core": "6.1.17",
+        "@fullcalendar/core": "6.1.19",
         "@fullcalendar/daygrid": "6.1.17",
         "@fullcalendar/interaction": "6.1.17",
         "@fullcalendar/list": "6.1.17",
@@ -66,7 +66,7 @@
         "jstree": "3.3.17",
         "jszip": "3.10.1",
         "katex": "0.16.22",
-        "laravel-vite-plugin": "1.2.0",
+        "laravel-vite-plugin": "^2.0.1",
         "leaflet": "1.9.4",
         "mapbox-gl": "3.8.0",
         "masonry-layout": "4.2.2",
@@ -85,7 +85,7 @@
         "shepherd.js": "14.3.0",
         "sortablejs": "1.15.6",
         "spinkit": "2.0.1",
-        "sweetalert2": "11.14.5",
+        "sweetalert2": "11.22.4",
         "swiper": "11.1.15",
         "timepicker": "1.14.1",
         "typeahead.js": "0.11.1"
@@ -107,11 +107,6 @@
         "concurrently": "9.1.2",
         "cross-env": "7.0.3",
         "glob": "10.4.5",
-        "eslint": "9.16.0",
-        "eslint-config-airbnb-base": "15.0.0",
-        "eslint-config-prettier": "9.1.0",
-        "eslint-plugin-import": "2.31.0",
-        "eslint-plugin-prettier": "5.4.0",
         "lodash": "4.17.21",
         "postcss": "8.5.4",
         "prettier": "3.5.3",
@@ -123,7 +118,7 @@
         "stylelint-config-idiomatic-order": "10.0.0",
         "stylelint-config-standard-scss": "13.1.0",
         "stylelint-use-logical-spec": "5.0.1",
-        "vite": "6.3.5"
+        "vite": "7.1.11"
     },
     "overrides": {
         "algoliasearch": "5.17.1",
@@ -141,7 +136,7 @@
         "datatables.net-select": "2.1.0",
         "postcss": "8.5.4",
         "search-insights": "2.17.3",
-        "superagent": "3.8.3",
+        "superagent": "10.2.3",
         "chokidar": "3.6.0",
         "source-map-resolve": "0.6.0",
         "sass": "1.76.0"
