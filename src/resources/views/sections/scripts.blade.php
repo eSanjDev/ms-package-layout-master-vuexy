@@ -12,7 +12,6 @@
     'resources/assets/vendor/libs/hammer/hammer.js',
     'resources/assets/vendor/libs/sweetalert2/sweetalert2.js',
     'resources/assets/vendor/libs/moment/moment.js',
-    'resources/assets/js/forms-selects.js',
     'resources/assets/vendor/libs/select2/select2.js',
     'resources/assets/vendor/libs/tagify/tagify.js',
     'resources/assets/vendor/libs/notyf/notyf.js',

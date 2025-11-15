@@ -7,6 +7,10 @@ class BaseTable {
 
         this.params.flagOnlyTrashed = parseInt(window.only_trash || 0);
         this.params.includesRelations = this.params.includesRelations || '';
+
+        this.csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            ?.getAttribute('content') || '';
     }
 
     init() {
@@ -113,8 +117,13 @@ class BaseTable {
                 buttonsStyling: false
             }).then((result) => {
                 if (result.value) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': this.csrfToken
+                        }
+                    });
                     $.ajax({
-                        url: `${baseUrlApiAdmin}/${this.resourceName}/${entityId}`,
+                        url: this.getUrl(entityId).delete,
                         method: 'DELETE',
                         success: () => {
                             Swal.fire({
@@ -164,8 +173,13 @@ class BaseTable {
                 buttonsStyling: false
             }).then((result) => {
                 if (result.value) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': this.csrfToken
+                        }
+                    });
                     $.ajax({
-                        url: `${baseUrlApiAdmin}/${this.resourceName}/${entityId}/restore`,
+                        url: this.getUrl(entityId).restore,
                         method: 'POST',
                         success: (response) => {
                             Swal.fire({
@@ -192,6 +206,14 @@ class BaseTable {
                 }
             });
         });
+    }
+
+    getUrl(...data) {
+        return {
+            index: `${baseUrlApiAdmin}/${this.resourceName}`,
+            delete: `${baseUrlApiAdmin}/${this.resourceName}/${data[0]}`,
+            restore: `${baseUrlApiAdmin}/${this.resourceName}/${data[0]}/restore`
+        }
     }
 
     // Method to add custom page length input
@@ -223,7 +245,7 @@ class BaseTable {
 
         const flagOnlyTrashed = this.params.flagOnlyTrashed || 0;
         const includesRelations = this.params.includesRelations;
-        $.getJSON(`${baseUrlApiAdmin}/${this.resourceName}`, {
+        $.getJSON(this.getUrl().index, {
             page: page,
             per_page: data.length,
             search: searchValue,
