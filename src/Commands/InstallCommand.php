@@ -40,10 +40,11 @@ class InstallCommand extends Command
 
 
         $this->info('Installing Layout Master package...');
+
         $this->call('vendor:publish', [
             '--provider' => "Esanj\\LayoutMaster\\Providers\\LayoutMasterServiceProvider",
+            '--force' => true,
         ]);
-
 
         $this->info('Layout Master package installed successfully. ✔');
         return self::SUCCESS;
