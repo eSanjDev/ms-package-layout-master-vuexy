@@ -185,7 +185,6 @@ class BaseTable {
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Restored!',
-                                text: response.message,
                                 customClass: {
                                     confirmButton: 'btn btn-success waves-effect waves-light'
                                 }
