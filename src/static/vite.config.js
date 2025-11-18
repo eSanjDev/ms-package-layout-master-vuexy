@@ -37,6 +37,11 @@ const FontsJsFiles = GetFilesArray('resources/assets/vendor/fonts/**/!(_)*.js');
 const FontsCssFiles = GetFilesArray('resources/assets/vendor/fonts/!(_)*.css');
 const FontsCssFiles2 = GetFilesArray('resources/assets/vendor/fonts/**/!(_)*.css');
 
+// Processing Scss & JS Package Files
+const PackageScssFiles = GetFilesArray('resources/assets/packages/**/scss/*.scss');
+const PackageCssFiles = GetFilesArray('resources/assets/packages/**/css/*.css');
+const PackageJsFiles = GetFilesArray('resources/assets/packages/**/js/*.js');
+
 // Processing Window Assignment for Libs like jKanban, pdfMake
 function libsWindowAssignment() {
     return {
@@ -71,6 +76,9 @@ export default defineConfig({
                 ...FontsJsFiles,
                 ...FontsCssFiles,
                 ...FontsCssFiles2,
+                ...PackageScssFiles,
+                ...PackageCssFiles,
+                ...PackageJsFiles,
             ],
             refresh: true
         }),
