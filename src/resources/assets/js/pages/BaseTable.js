@@ -208,10 +208,13 @@ class BaseTable {
     }
 
     getUrl(...data) {
+        const currentUrl = new URL(window.location.href);
+        const baseUrl = currentUrl.origin + currentUrl.pathname.replace(/\/$/, "");
+
         return {
-            index: `${baseUrlApiAdmin}/${this.resourceName}`,
-            delete: `${baseUrlApiAdmin}/${this.resourceName}/${data[0]}`,
-            restore: `${baseUrlApiAdmin}/${this.resourceName}/${data[0]}/restore`
+            index: `${baseUrl}/`,
+            delete: `${baseUrl}/${data[0]}`,
+            restore: `${baseUrl}/${data[0]}/restore`
         }
     }
 
