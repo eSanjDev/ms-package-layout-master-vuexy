@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Esanj\LayoutMaster\Providers;
 
 use Esanj\LayoutMaster\Commands\InstallCommand;
@@ -7,17 +9,11 @@ use Illuminate\Support\ServiceProvider;
 
 class LayoutMasterServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         $this->registerCommands();
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         $this->registerPublishing();
@@ -34,31 +30,33 @@ class LayoutMasterServiceProvider extends ServiceProvider
 
     private function registerPublishing(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                $this->packagePath('resources/views') => resource_path('views'),
-            ], 'esanj-layout-master-views');
-
-            $this->publishes([
-                $this->packagePath('resources/menu') => resource_path('menu'),
-            ], 'esanj-layout-master-menu');
-
-            $this->publishes([
-                $this->packagePath('resources/assets') => resource_path('assets'),
-            ], 'esanj-layout-master-assets');
-
-            $this->publishes([
-                $this->packagePath('public') => public_path('/assets/vendor/layout-master'),
-            ], 'esanj-layout-master-assets');
-
-            $this->publishes([
-                $this->packagePath('static') => base_path(),
-            ], 'esanj-layout-master-static');
-
-            $this->publishes([
-                $this->packagePath('Components') => app_path('View/Components'),
-            ], 'esanj-layout-master-components');
+        if (! $this->app->runningInConsole()) {
+            return;
         }
+
+        $this->publishes([
+            $this->packagePath('resources/views') => resource_path('views'),
+        ], 'esanj-layout-master-views');
+
+        $this->publishes([
+            $this->packagePath('resources/menu') => resource_path('menu'),
+        ], 'esanj-layout-master-menu');
+
+        $this->publishes([
+            $this->packagePath('resources/assets') => resource_path('assets'),
+        ], 'esanj-layout-master-assets');
+
+        $this->publishes([
+            $this->packagePath('public') => public_path('assets/vendor/layout-master'),
+        ], 'esanj-layout-master-public');
+
+        $this->publishes([
+            $this->packagePath('static') => base_path(),
+        ], 'esanj-layout-master-static');
+
+        $this->publishes([
+            $this->packagePath('Components') => app_path('View/Components'),
+        ], 'esanj-layout-master-components');
     }
 
     private function packagePath(string $path): string

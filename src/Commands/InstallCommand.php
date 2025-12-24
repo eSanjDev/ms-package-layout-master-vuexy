@@ -1,52 +1,69 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Esanj\LayoutMaster\Commands;
 
 use Illuminate\Console\Command;
 
 class InstallCommand extends Command
 {
-    protected $signature = 'layout-master:install';
+    protected $signature = 'layout-master:install
+                            {--force : Force overwrite existing files}';
+
     protected $description = 'Install the Layout Master package';
+
+    private const CONFIG_FILES = [
+        'package.json',
+        'vite.config.js',
+        'postcss.config.js',
+    ];
 
     public function handle(): int
     {
-        if (file_exists(base_path('package.json'))) {
-            if ($this->confirm('package.json file already exists. Do you remove it and copy the new one?')) {
-                unlink(base_path('package.json'));
-                $this->info('package.json removed.');
-            } else {
-                $this->info('Skipping package.json file copy.');
-            }
-        }
-
-        if (file_exists(base_path('vite.config.js'))) {
-            if ($this->confirm('vite.config.js file already exists. Do you remove it and copy the new one?')) {
-                unlink(base_path('vite.config.js'));
-                $this->info('vite.config.js removed.');
-            } else {
-                $this->info('Skipping vite.config.js file copy.');
-            }
-        }
-
-        if (file_exists(base_path('postcss.config.js'))) {
-            if ($this->confirm('postcss.config.js file already exists. Do you remove it and copy the new one?')) {
-                unlink(base_path('postcss.config.js'));
-                $this->info('postcss.config.js removed.');
-            } else {
-                $this->info('Skipping postcss.config.js file copy.');
-            }
-        }
-
-
         $this->info('Installing Layout Master package...');
 
+        $force = $this->option('force');
+
+        if (! $force) {
+            $this->handleExistingConfigFiles();
+        }
+
+        $this->publishAssets();
+
+        $this->info('Layout Master package installed successfully.');
+
+        return self::SUCCESS;
+    }
+
+    private function handleExistingConfigFiles(): void
+    {
+        foreach (self::CONFIG_FILES as $file) {
+            $this->handleExistingFile($file);
+        }
+    }
+
+    private function handleExistingFile(string $filename): void
+    {
+        $filePath = base_path($filename);
+
+        if (! file_exists($filePath)) {
+            return;
+        }
+
+        if ($this->confirm("{$filename} already exists. Do you want to overwrite it?", false)) {
+            unlink($filePath);
+            $this->info("{$filename} removed.");
+        } else {
+            $this->warn("Skipping {$filename}.");
+        }
+    }
+
+    private function publishAssets(): void
+    {
         $this->call('vendor:publish', [
-            '--provider' => "Esanj\\LayoutMaster\\Providers\\LayoutMasterServiceProvider",
+            '--provider' => 'Esanj\\LayoutMaster\\Providers\\LayoutMasterServiceProvider',
             '--force' => true,
         ]);
-
-        $this->info('Layout Master package installed successfully. ✔');
-        return self::SUCCESS;
     }
 }

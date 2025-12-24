@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\View\Components;
 
 use Closure;
@@ -7,66 +9,112 @@ use Esanj\Manager\Models\Manager;
 use Esanj\Manager\Services\ManagerService;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Component;
+use RuntimeException;
 
 class Menu extends Component
 {
-    private Manager $manager;
+    private const MENU_PATH = 'menu/admin.json';
+
+    private ?Manager $manager = null;
+
+    public function __construct(
+        protected ManagerService $managerService
+    ) {}
 
     /**
-     * Create a new component instance.
-     */
-    public function __construct(protected ManagerService $managerService)
-    {
-    }
-
-    /**
-     * Get the view / contents that represent the component.
      * @throws AuthenticationException
      */
     public function render(): View|Closure|string
     {
-        $menuJson = file_get_contents(resource_path('menu/admin.json'));
-        $menuArray = json_decode($menuJson, true);
+        $this->ensureAuthenticated();
 
-        if (!Auth::guard('manager')->check()) {
-            throw new AuthenticationException();
-        }
-
-        $managerId = Auth::guard('manager')->id();
-        $this->manager = $this->managerService->findById($managerId);
-
-        $menuData = ['menu' => $this->filterMenu($menuArray['menu'])];
-
+        $menuArray = $this->loadMenuData();
+        $menuData = ['menu' => $this->filterMenu($menuArray['menu'] ?? [])];
         $currentRouteName = Route::currentRouteName();
 
         return view('components.menu', compact('menuData', 'currentRouteName'));
     }
 
+    /**
+     * @throws AuthenticationException
+     */
+    private function ensureAuthenticated(): void
+    {
+        if (! Auth::guard('manager')->check()) {
+            throw new AuthenticationException();
+        }
+
+        $managerId = Auth::guard('manager')->id();
+        $this->manager = $this->managerService->findById($managerId);
+    }
+
+    private function loadMenuData(): array
+    {
+        $menuPath = resource_path(self::MENU_PATH);
+
+        if (! file_exists($menuPath)) {
+            throw new RuntimeException("Menu file not found: {$menuPath}");
+        }
+
+        $content = file_get_contents($menuPath);
+
+        if ($content === false) {
+            throw new RuntimeException("Failed to read menu file: {$menuPath}");
+        }
+
+        $data = json_decode($content, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new RuntimeException('Invalid JSON in menu file: ' . json_last_error_msg());
+        }
+
+        return $data;
+    }
+
     protected function filterMenu(array $menu): array
     {
-        return collect($menu)->map(function ($item) {
+        return collect($menu)
+            ->map(fn (array $item) => $this->processMenuItem($item))
+            ->filter()
+            ->values()
+            ->toArray();
+    }
 
-            if (!empty($item['permission']) && !$this->managerService->hasPermission($this->manager->id, $item['permission'])) {
+    private function processMenuItem(array $item): ?array
+    {
+        if (! $this->hasPermissionForItem($item)) {
+            return null;
+        }
+
+        if (! empty($item['submenu'])) {
+            $item['submenu'] = $this->filterSubmenu($item['submenu']);
+
+            if (empty($item['submenu'])) {
                 return null;
             }
+        }
 
-            if (!empty($item['submenu'])) {
-                $item['submenu'] = collect($item['submenu'])
-                    ->filter(function ($subItem) {
-                        return empty($subItem['permission'] && !$this->managerService->hasPermission($this->manager->id, $subItem['permission']));
-                    })
-                    ->values()
-                    ->toArray();
+        return $item;
+    }
 
-                if (empty($item['submenu'])) {
-                    return null;
-                }
-            }
+    private function filterSubmenu(array $submenu): array
+    {
+        return collect($submenu)
+            ->filter(fn (array $subItem) => $this->hasPermissionForItem($subItem))
+            ->values()
+            ->toArray();
+    }
 
-            return $item;
-        })->filter()->values()->toArray();
+    private function hasPermissionForItem(array $item): bool
+    {
+        if (empty($item['permission'])) {
+            return true;
+        }
+
+        return $this->managerService->hasPermission($this->manager->id, $item['permission']);
     }
 }
