@@ -15,7 +15,7 @@
 
             {{-- submenu --}}
             @if (isset($submenu['submenu']))
-                <x-sub-menu :data="$menu['submenu']"></x-sub-menu>
+                <x-sub-menu :data="$submenu['submenu']"></x-sub-menu>
             @endif
         </li>
     @endforeach

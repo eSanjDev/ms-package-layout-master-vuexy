@@ -29,7 +29,7 @@ class InstallCommand extends Command
             $this->handleExistingConfigFiles();
         }
 
-        $this->publishAssets();
+        $this->publishAssets($force);
 
         $this->info('Layout Master package installed successfully.');
 
@@ -59,11 +59,14 @@ class InstallCommand extends Command
         }
     }
 
-    private function publishAssets(): void
+    private function publishAssets(bool $force): void
     {
+        // Without --force, vendor:publish skips files that already exist, so it
+        // never clobbers customized views/config. The root config files the user
+        // agreed to overwrite were deleted above, so they get republished here.
         $this->call('vendor:publish', [
             '--provider' => 'Esanj\\LayoutMaster\\Providers\\LayoutMasterServiceProvider',
-            '--force' => true,
+            '--force' => $force,
         ]);
     }
 }
