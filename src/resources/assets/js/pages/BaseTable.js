@@ -1,3 +1,12 @@
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+}
+
 class BaseTable {
     constructor(resourceName, entityName, params = {}) {
         this.resourceName = resourceName;
@@ -364,7 +373,8 @@ class BaseTable {
                 display: $.fn.dataTable.Responsive.display.modal({
                     header(row) {
                         const data = row.data();
-                        return `Details of ${data.title || data.name || data.code || data.id}`;
+                        // Responsive inserts the header as HTML, and these fields are user-entered.
+                        return `Details of ${escapeHtml(data.title || data.name || data.code || data.id)}`;
                     }
                 }),
                 type: 'column',
